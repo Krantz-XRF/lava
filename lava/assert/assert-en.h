@@ -1,5 +1,5 @@
 #pragma once
-#include <lava/format/format.h>
+#include <lava/format.h>
 #include <stdexcept>
 
 // if exceptions are disabled, error messages are printed to `std::cerr`
