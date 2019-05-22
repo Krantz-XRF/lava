@@ -43,7 +43,7 @@ namespace lava
 		resource_impl(const resource_impl&) = delete;
 		~resource_impl() = default;
 
-		resource_impl& operator=(resource_impl&& obj)
+		resource_impl& operator=(resource_impl&& obj) assert_except
 		{
 			(BaseObjs::operator=(std::move(obj)), ...);
 			return *this;
@@ -60,11 +60,11 @@ namespace lava
 	using resource = resource_impl<ObjType, expand_types<ObjType, ResPtrs...>>;
 } // namespace lava
 
-#define DECLARE_OBJECT(type)                    \
-	type(type&&) noexcept = default;            \
-	type(const type&) = delete;                 \
-	~type() noexcept = default;                 \
-	type& operator=(type&&) noexcept = default; \
+#define DECLARE_OBJECT(type)           \
+	type(type&&) = default;            \
+	type(const type&) = delete;        \
+	~type() noexcept = default;        \
+	type& operator=(type&&) = default; \
 	type& operator=(const type&) = delete;
 
 #define DEFINE_GETTER(type, name)                                       \

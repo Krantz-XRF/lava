@@ -21,7 +21,7 @@ namespace lava
 		{
 			obj.rawPtr = nullptr;
 		}
-		resource_single& operator=(resource_single&& obj) noexcept
+		resource_single& operator=(resource_single&& obj) assert_except
 		{
 			expects(&obj != this, msg_should_not_move_to_this);
 			rawPtr = obj.rawPtr;

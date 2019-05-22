@@ -21,7 +21,7 @@ namespace lava
 		resource_many(resource_many&& obj) noexcept
 			: resource{std::move(obj.resource)}
 		{}
-		resource_many& operator=(resource_many&& obj) noexcept
+		resource_many& operator=(resource_many&& obj) assert_except
 		{
 			expects(&obj != this, msg_should_not_move_to_this);
 			resource = std::move(obj.resource);
