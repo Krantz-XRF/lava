@@ -1,6 +1,6 @@
 #pragma once
-#include <lava/resource/single.h>
 #include <lava/resource/many.h>
+#include <lava/resource/single.h>
 #include <lava/resource/some.h>
 
 namespace lava
@@ -67,14 +67,14 @@ namespace lava
 	type& operator=(type&&) noexcept = default; \
 	type& operator=(const type&) = delete;
 
-#define DEFINE_GETTER(type, name)                                 \
-	type& get##name() noexcept { return getRawPtr(tag<type>{}); } \
-	type get##name() const noexcept { return getRawPtr(tag<type>{}); }
-#define DEFINE_GETTER_N(type, name, n)                               \
-	type& get##name() noexcept { return getRawPtr(tag<type, n>{}); } \
-	type get##name() const noexcept { return getRawPtr(tag<type, n>{}); }
-#define DEFINE_GETTER_MANY(type, name)                                                \
-	decltype(auto) get##name##s() noexcept { return getRawPtr(tag<type>{}); }         \
-	decltype(auto) get##name##s() const noexcept { return getRawPtr(tag<type>{}); }   \
-	decltype(auto) get##name(size_t i) noexcept { return getRawPtr(tag<type>{})[i]; } \
-	decltype(auto) get##name(size_t i) const noexcept { return getRawPtr(tag<type>{})[i]; }
+#define DEFINE_GETTER(type, name)                                       \
+	type& get##name() noexcept { return getRawPtr(lava::tag<type>{}); } \
+	type get##name() const noexcept { return getRawPtr(lava::tag<type>{}); }
+#define DEFINE_GETTER_N(type, name, n)                                     \
+	type& get##name() noexcept { return getRawPtr(lava::tag<type, n>{}); } \
+	type get##name() const noexcept { return getRawPtr(lava::tag<type, n>{}); }
+#define DEFINE_GETTER_MANY(type, name)                                                      \
+	decltype(auto) get##name##s() noexcept { return getRawPtr(lava::tag<type>{}); }         \
+	decltype(auto) get##name##s() const noexcept { return getRawPtr(lava::tag<type>{}); }   \
+	decltype(auto) get##name(size_t i) noexcept { return getRawPtr(lava::tag<type>{})[i]; } \
+	decltype(auto) get##name(size_t i) const noexcept { return getRawPtr(lava::tag<type>{})[i]; }
