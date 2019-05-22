@@ -29,12 +29,20 @@ target_include_directories(lava-format INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # lava.assert: the assertion library
 add_library(lava-assert INTERFACE)
-target_sources(lava-assert INTERFACE
-	lava/assert.h
-	lava/assert/assert-zh-cn.h
-	lava/assert/assert-en.h)
+target_sources(lava-assert INTERFACE lava/assert.h)
 target_include_directories(lava-assert INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lava-assert INTERFACE lava-config lava-format)
+
+# lava.resource: the resource management library
+add_library(lava-resource INTERFACE)
+target_sources(lava-resource INTERFACE
+	lava/resource.h
+	lava/resource/utility.h
+	lava/resource/single.h
+	lava/resource/some.h
+	lava/resource/many.h)
+target_include_directories(lava-resource INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(lava-resource INTERFACE lava-config lava-assert lava-format)
 
 # test cases for each library
 add_subdirectory(test test)
