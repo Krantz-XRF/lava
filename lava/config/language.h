@@ -3,5 +3,5 @@
 #define ENGLISH 1
 
 #if !defined(LANGUAGE)
-#define LANGUAGE CHINESE_SIMPLIFIED
+#	define LANGUAGE CHINESE_SIMPLIFIED
 #endif
