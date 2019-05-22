@@ -8,8 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # lava has zh_CN charset supported, and uses UTF-8 without BOM
 # add option /utf-8 here to force MSVC use UTF-8 to parse source files
 if (MSVC)
-	string(APPEND CMAKE_C_FLAGS " /utf-8")
-	string(APPEND CMAKE_CXX_FLAGS " /utf-8")
+	string(APPEND CMAKE_C_FLAGS " /source-charset:utf-8")
+	string(APPEND CMAKE_CXX_FLAGS " /source-charset:utf-8")
 endif ()
 
 # lava.config: library configurations
@@ -20,7 +20,7 @@ target_include_directories(lava-config INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 # lava.format: the text formatting library
 add_library(lava-format INTERFACE)
 target_sources(lava-format INTERFACE
-	lava/format/format.h
+	lava/format.h
 	lava/format/basic.h
 	lava/format/integers.h
 	lava/format/text.h

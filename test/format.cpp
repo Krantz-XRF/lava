@@ -1,5 +1,5 @@
 #include <iostream>
-#include <lava/format/format.h>
+#include <lava/format.h>
 
 int main()
 {
