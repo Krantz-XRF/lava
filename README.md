@@ -116,6 +116,8 @@ int main()
 
 TODO
 
+See `lava/assert.h` for implementation details.
+
 ### Example for `lava.assert`
 
 ```c++
@@ -148,6 +150,8 @@ int main()
 ### Explanation
 
 TODO
+
+See `lava/resource.h` and `lava/resource/*` for implementation details.
 
 ### Example for `lava.resource`
 
@@ -206,9 +210,17 @@ int main()
     // while the const version returns value instead
     // t.getDouble(0);
     // the above line should raise a out-of-range error, for the vector is not initialized at all
-    t.getDoubles();        // returns the std::vector<double*>
+    t.getDoubles();     // returns the std::vector<double*>
     t.getFirstInt();    // returns the first int*
     t.getVoidPointer(); // returns the void*
     return 0;
 }
 ```
+
+## lava.config
+
+`lava.config` provides support for localization via `lava/config/localization.h` and `lava/config/language.h`.
+
+Currently only Chinese Simplified (`CHINESE_SIMPLIFIED`, default) and English (`ENGLISH`) is supported. To use a specific language, `#define LANGUAGE <lang>` before all `lava` headers.
+
+In future, the language options may be added to CMake configurations.
