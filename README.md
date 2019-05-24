@@ -2,6 +2,8 @@
 
 ## lava.format
 
+### Introduction
+
 `lava.format` provides a consistent interface for text formating to strings/ostreams, and can be easily extended.
 
 3 `format_*` functions are provided: `format`, `format_s`, `format_io`:
@@ -12,7 +14,22 @@
 
 In the following sections, when refering to types, the cv-qualifiers are insignificant, for all types are `std::decay`ed before they are passed to `lava::format::format_trait`.
 
-The entities below are natively supported.
+### Getting started
+
+Try out the code below:
+
+```c++
+namespace fmt = lava::format;
+// print format result to std::ostream (e.g. std::cout)
+fmt::format_io(std::cout, "String", 'c', fmt::decimal(42), fmt::endl);
+// append format result to std::string
+std::string data = "Some data here.";
+fmt::format_s(data, "String", 'c', fmt::decimal(42), fmt::endl);
+// get format result as std::string returned
+std::string res = fmt::format("String", 'c', fmt::decimal(42), fmt::endl);
+```
+
+Just list the objects to format as parameters to `format_*` functions, and we will get the format result. The entities below are natively supported, and we can extend the ability of `format_*` to custom objects as describe in [Extensions](#Extensions).
 
 ### Texts
 
@@ -110,6 +127,30 @@ int main()
 }
 ```
 
+Output:
+
+```text
+String:       A String
+Character:    a
+Decimal:      42
+Octal:        52
+Hexadecimal:  2A
+Binary:       101010
+23-Based:     1J
+Unicode:      U+0061[97]
+Align-left:   Text
+Align-right:        Text
+Align-center:    Text
+```
+
+Note that there is trailing spaces in the last 1st and 3rd lines. So with LF characters written out explicitly as `<LF>`, we should see
+
+```text
+Align-left:   Text      <LF>
+Align-right:        Text<LF>
+Align-center:    Text   <LF>
+```
+
 ## lava.assert
 
 ### Explanation
@@ -143,6 +184,28 @@ int main()
     test_assert(panic("Don't panic. --The Hitchhiker's Guide to the Galaxy"));
     return 0;
 }
+```
+
+### Output
+
+Here we print the result with `LANGUAGE` defined as `ENGLISH`.
+
+```text
+error: "E:\GitHub\Lava\Lava\test\assert.cpp":17:main: pre-condition[1 == 2] is not satisfied. messageThe algorithm expect 1 == 2 here.
+error: "E:\GitHub\Lava\Lava\test\assert.cpp":18:main: post-condition[1 == 2] is not satisfied. messageThe algorithm ensures 1 == 2 here.
+error: "E:\GitHub\Lava\Lava\test\assert.cpp":19:main: invariant[1 == 2] is not satisfied. messageThe invariant 1 == 2 should hold here.
+error: "E:\GitHub\Lava\Lava\test\assert.cpp":20:main: unreachable codes are reachedThis code should not be reached.
+error: "E:\GitHub\Lava\Lava\test\assert.cpp":21:main: panic: Don't panic. --The Hitchhiker's Guide to the Galaxy
+```
+
+Without defining `LANGUAGE` to `ENGLISH`, it will default to `CHINESE_SIMPLIFIED`, so the output would be like:
+
+```text
+错误: "E:\GitHub\Lava\Lava\test\assert.cpp":16:main: 先置条件[1 == 2]未满足。错误信息：The algorithm expect 1 == 2 here.
+错误: "E:\GitHub\Lava\Lava\test\assert.cpp":17:main: 后置条件[1 == 2]未满足。错误信息：The algorithm ensures 1 == 2 here.
+错误: "E:\GitHub\Lava\Lava\test\assert.cpp":18:main: 不变式[1 == 2]未满足。错误信息：The invariant 1 == 2 should hold here.
+错误: "E:\GitHub\Lava\Lava\test\assert.cpp":19:main: 执行到一处不可达代码：This code should not be reached.
+错误: "E:\GitHub\Lava\Lava\test\assert.cpp":20:main: 致命错误: Don't panic. --The Hitchhiker's Guide to the Galaxy
 ```
 
 ## lava.resource
@@ -215,6 +278,28 @@ int main()
     t.getVoidPointer(); // returns the void*
     return 0;
 }
+```
+
+### Output
+
+Output with `LANGUAGE` defined as `ENGLISH`:
+
+```text
+Error: error: "E:\GitHub\Lava\Lava\lava\resource\single.h":26:operator =: pre-condition[&obj != this] is not satisfied. message: Should not move a resource object to itself.
+Destructing a `void*`.
+Destructing a `int*`.
+Destructing a `int*`.
+Destructing a `int*`.
+```
+
+Output in Chinese Simplified (default case):
+
+```text
+Error: 错误: "E:\GitHub\Lava\Lava\lava\resource\single.h":26:operator =: 先置条件[&obj != this]未满足。错误信息：不应该 把一个资源对象移动到自己。
+Destructing a `void*`.
+Destructing a `int*`.
+Destructing a `int*`.
+Destructing a `int*`.
 ```
 
 ## lava.config
