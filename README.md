@@ -233,16 +233,16 @@ public:
 
     // finalizers: no custom destructor needed, all handled by the base class
     // when necessary, we should test whether the pointer passed in is nullptr
-    // for lava.resource does no check on this, we should make it safe to Destroy nullptrs
-    void Destroy(int* x) noexcept
+    // for lava.resource does no check on this, we should make it safe to destroy nullptrs
+    void destroy(int* x) noexcept
     {
         lava::format::format_io(std::cout, "Destructing a `int*`.", lava::format::endl);
     }
-    void Destroy(void* x) noexcept
+    void destroy(void* x) noexcept
     {
         lava::format::format_io(std::cout, "Destructing a `void*`.", lava::format::endl);
     }
-    void Destroy(double* x) noexcept
+    void destroy(double* x) noexcept
     {
         lava::format::format_io(std::cout, "Destructing a `double*`.", lava::format::endl);
     }

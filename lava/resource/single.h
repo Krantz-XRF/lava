@@ -31,7 +31,7 @@ namespace lava
 		// call the Destroy function from derived class
 		~resource_single()
 		{
-			static_cast<ObjType*>(this)->Destroy(rawPtr);
+			static_cast<ObjType*>(this)->destroy(rawPtr);
 			rawPtr = nullptr;
 		}
 

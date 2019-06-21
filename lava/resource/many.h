@@ -31,7 +31,7 @@ namespace lava
 		~resource_many()
 		{
 			for (auto rawPtr : resource)
-				static_cast<ObjType*>(this)->Destroy(rawPtr);
+				static_cast<ObjType*>(this)->destroy(rawPtr);
 			resource.clear();
 		}
 
