@@ -40,7 +40,12 @@ namespace lava::format
 	struct default_format_trait
 	{
 		using derived = format_trait<std::decay_t<T>>;
-		static std::string format_str(T v) { return derived::format_append("", v); }
+		static std::string format_str(T v)
+		{
+			std::string res;
+			derived::format_append(res, v);
+			return res;
+		}
 		static void format_append(std::string& res, T v) { res.append(derived::format_str(v)); }
 		static void format_stream(std::ostream& os, T v) { os << derived::format_str(v); }
 	};
