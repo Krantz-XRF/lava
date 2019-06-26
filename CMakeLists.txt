@@ -44,5 +44,15 @@ target_sources(lava-resource INTERFACE
 target_include_directories(lava-resource INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lava-resource INTERFACE lava-config lava-assert lava-format)
 
+# lava.bitflags: the bit-flags support for enum
+add_library(lava-bitflags INTERFACE)
+target_sources(lava-bitflags INTERFACE lava/bitflags.h)
+target_include_directories(lava-bitflags INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
+# lava.trace: the debug trace library
+add_library(lava-trace INTERFACE)
+target_sources(lava-trace INTERFACE lava/trace.h)
+target_include_directories(lava-bitflags INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
 # test cases for each library
 add_subdirectory(test test)

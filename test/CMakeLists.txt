@@ -6,3 +6,6 @@ target_link_libraries(test_assert lava-assert)
 
 add_executable(test_resource resource.cpp)
 target_link_libraries(test_resource lava-resource lava-format)
+
+add_executable(test_trace trace.cpp)
+target_link_libraries(test_trace lava-trace lava-format)
