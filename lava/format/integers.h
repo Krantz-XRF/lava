@@ -17,6 +17,15 @@ namespace lava::format
 		return {x};
 	}
 
+	template<typename T, bool capital = true>
+	using bin_t = num_base<T, 2, capital>;
+	template<typename T, bool capital = true>
+	using oct_t = num_base<T, 8, capital>;
+	template<typename T, bool capital = true>
+	using dec_t = num_base<T, 10, capital>;
+	template<typename T, bool capital = true>
+	using hex_t = num_base<T, 16, capital>;
+
 #define DEFINE_NUM_BASE(name, base)                \
 	template<bool capital = true, typename T>      \
 	constexpr num_base<T, base, capital> name(T x) \
@@ -64,5 +73,13 @@ namespace lava::format
 		}
 		static void format_append(std::string& res, U x) { res.append(format_str(x)); }
 		static void format_stream(std::ostream& os, U x) { os << format_str(x); }
+	};
+
+	template<> // format a boolean
+	struct format_trait<bool>
+	{
+		static std::string format_str(bool x) { return x ? "true" : "false"; }
+		static void format_append(std::string& res, bool x) { res.append(format_str(x)); }
+		static void format_stream(std::ostream& os, bool x) { os << format_str(x); }
 	};
 } // namespace lava::format

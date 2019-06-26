@@ -26,22 +26,22 @@ namespace lava::format
 	struct format_trait<std::tuple<Args...>>
 	{
 		// iterate over a tuple
-		template<typename F, typename indices, typename... Args>
+		template<typename F, typename indices, typename... Ts>
 		struct tuple_f;
-		template<typename F, typename... Args, size_t... indices>
-		struct tuple_f<F, std::index_sequence<indices...>, Args...>
+		template<typename F, typename... Ts, size_t... indices>
+		struct tuple_f<F, std::index_sequence<indices...>, Ts...>
 		{
-			static void foreach_tuple(const std::tuple<Args...>& t, F f)
+			static void foreach_tuple(const std::tuple<Ts...>& t, F f)
 			{
 				(f(std::get<indices + 1>(t)), ...);
 			}
 		};
 
 		// std::tuple iterate: wrapper function
-		template<typename F, typename... Args>
-		static void foreach_tuple(const std::tuple<Args...>& t, F f)
+		template<typename F, typename... Ts>
+		static void foreach_tuple(const std::tuple<Ts...>& t, F f)
 		{
-			tuple_f<F, std::make_index_sequence<sizeof...(Args) - 1>, Args...>::foreach_tuple(t, f);
+			tuple_f<F, std::make_index_sequence<sizeof...(Ts) - 1>, Ts...>::foreach_tuple(t, f);
 		}
 
 		static std::string format_str(const std::tuple<Args...>& t)
@@ -68,6 +68,9 @@ namespace lava::format
 	struct identity
 	{
 		const F& f;
+		identity(const F& f)
+			: f{f}
+		{}
 	};
 
 	template<typename F> // the identity wrapper
