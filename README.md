@@ -138,20 +138,24 @@ int main()
 Output:
 
 ```text
-String:       A String
-Character:    a
-Decimal:      42
-Octal:        52
-Hexadecimal:  2A
-Binary:       101010
-23-Based:     1J
-Unicode:      U+0061[97]
-Align-left:   Text
-Align-right:        Text
-Align-center:    Text
+String:         A String
+Character:      a
+Decimal:        42
+Octal:          52
+Hexadecimal:    2A
+Binary:         101010
+23-Based:       1J
+Unicode:        U+0061[97]
+Align-left:     Text
+Align-right:          Text
+Align-center:      Text
+Pair:           <42,Text>
+Tuple:          <a,String,U+0078[120]>
+Plain Array:    {42,0,1}
+Literal-String: "String1\nString2"
 ```
 
-Note that there is trailing spaces in the last 1st and 3rd lines. So with LF characters written out explicitly as `<LF>`, we should see
+Note that there is trailing spaces in lines "align-left" and "align-center". So with LF characters written out explicitly as `<LF>`, we should see
 
 ```text
 Align-left:   Text      <LF>
