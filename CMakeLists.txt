@@ -55,4 +55,4 @@ target_sources(lava-trace INTERFACE lava/trace.h)
 target_include_directories(lava-bitflags INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # test cases for each library
-add_subdirectory(test test)
+add_subdirectory(test test EXCLUDE_FROM_ALL)
