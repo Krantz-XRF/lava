@@ -68,6 +68,7 @@ namespace lava::format
 			if constexpr (std::is_signed_v<T>)
 				if (x0 < 0)
 					res.push_back('-');
+			static_cast<void>(x0);
 			std::reverse(res.begin(), res.end());
 			return res;
 		}
