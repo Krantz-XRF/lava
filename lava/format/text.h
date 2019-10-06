@@ -1,7 +1,7 @@
 #pragma once
 #include "basic.h"
-#include "meta.h"
 #include "integers.h"
+#include "meta.h"
 
 namespace lava::format
 {
@@ -15,6 +15,14 @@ namespace lava::format
 
 	template<> // format a C-style NUL-terminated string
 	struct format_trait<const char*>
+	{
+		static std::string format_str(const char* s) { return {s}; }
+		static void format_append(std::string& res, const char* s) { res.append(s); }
+		static void format_stream(std::ostream& os, const char* s) { os << s; }
+	};
+
+	template<> // format a non-const C-style NUL-terminated string
+	struct format_trait<char*>
 	{
 		static std::string format_str(const char* s) { return {s}; }
 		static void format_append(std::string& res, const char* s) { res.append(s); }
