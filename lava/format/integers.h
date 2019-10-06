@@ -55,7 +55,7 @@ namespace lava::format
 
 		static std::string format_str(U ux)
 		{
-			T x = ux.value;
+			T x = ux.value, x0 = x;
 			std::string res{};
 			if constexpr (std::is_signed_v<T>)
 				if (x < 0)
@@ -66,7 +66,7 @@ namespace lava::format
 				x /= base;
 			} while (x != 0);
 			if constexpr (std::is_signed_v<T>)
-				if (x < 0)
+				if (x0 < 0)
 					res.push_back('-');
 			std::reverse(res.begin(), res.end());
 			return res;
