@@ -56,19 +56,25 @@ namespace lava::format
 		static void format_append(std::string& res, U ux)
 		{
 			T x = ux.value, x0 = x;
+			if (x == 0)
+			{
+				res.push_back('0');
+				return;
+			}
+			std::string temp;
 			if constexpr (std::is_signed_v<T>)
 				if (x < 0)
 					x = -x;
 			do
 			{
-				res.push_back(digit_of(x % base));
+				temp.push_back(digit_of(x % base));
 				x /= base;
 			} while (x != 0);
 			if constexpr (std::is_signed_v<T>)
 				if (x0 < 0)
-					res.push_back('-');
+					temp.push_back('-');
 			static_cast<void>(x0);
-			std::reverse(res.begin(), res.end());
+			res.append(temp.crbegin(), temp.crend());
 		}
 	};
 
