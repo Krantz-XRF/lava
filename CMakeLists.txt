@@ -12,6 +12,13 @@ if (MSVC)
 	string(APPEND CMAKE_CXX_FLAGS " /source-charset:utf-8")
 endif ()
 
+# Note: lava currently depends on correction P0522R0 of C++17
+# For compatibility reasons, clang does not support this by default
+# So here we must add a compile time option to force this
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    string(APPEND CMAKE_CXX_FLAGS " -frelaxed-template-template-args")
+endif ()
+
 # lava.config: library configurations
 add_library(lava-config INTERFACE)
 target_sources(lava-config INTERFACE lava/config/language.h)
