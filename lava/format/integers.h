@@ -53,10 +53,9 @@ namespace lava::format
 				return static_cast<char>(x - 10 + 'a');
 		}
 
-		static std::string format_str(U ux)
+		static void format_append(std::string& res, U ux)
 		{
 			T x = ux.value, x0 = x;
-			std::string res{};
 			if constexpr (std::is_signed_v<T>)
 				if (x < 0)
 					x = -x;
@@ -70,17 +69,15 @@ namespace lava::format
 					res.push_back('-');
 			static_cast<void>(x0);
 			std::reverse(res.begin(), res.end());
-			return res;
 		}
-		static void format_append(std::string& res, U x) { res.append(format_str(x)); }
-		static void format_stream(std::ostream& os, U x) { os << format_str(x); }
 	};
 
 	template<> // format a boolean
 	struct format_trait<bool>
 	{
-		static std::string format_str(bool x) { return x ? "true" : "false"; }
-		static void format_append(std::string& res, bool x) { res.append(format_str(x)); }
-		static void format_stream(std::ostream& os, bool x) { os << format_str(x); }
+		static void format_append(std::string& res, bool x)
+		{
+			res.append(x ? "true" : "false");
+		}
 	};
 } // namespace lava::format

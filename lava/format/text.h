@@ -8,33 +8,25 @@ namespace lava::format
 	template<> // format a single character
 	struct format_trait<char>
 	{
-		static std::string format_str(char c) { return std::string(1, c); }
 		static void format_append(std::string& res, char c) { res.push_back(c); }
-		static void format_stream(std::ostream& os, char c) { os.put(c); }
 	};
 
 	template<> // format a C-style NUL-terminated string
 	struct format_trait<const char*>
 	{
-		static std::string format_str(const char* s) { return {s}; }
 		static void format_append(std::string& res, const char* s) { res.append(s); }
-		static void format_stream(std::ostream& os, const char* s) { os << s; }
 	};
 
 	template<> // format a non-const C-style NUL-terminated string
 	struct format_trait<char*>
 	{
-		static std::string format_str(const char* s) { return {s}; }
 		static void format_append(std::string& res, const char* s) { res.append(s); }
-		static void format_stream(std::ostream& os, const char* s) { os << s; }
 	};
 
 	template<> // format a C++ std::string
 	struct format_trait<std::string>
 	{
-		static std::string format_str(const std::string& s) { return s; }
 		static void format_append(std::string& res, const std::string& s) { res.append(s); }
-		static void format_stream(std::ostream& os, const std::string& s) { os << s; }
 	};
 
 	template<typename T>
@@ -96,31 +88,18 @@ namespace lava::format
 	template<typename T>
 	struct format_trait<literal<T>>
 	{
-		static std::string format_str(literal<T> c)
-		{
-			std::string res;
-			format_append(res, c);
-			return res;
-		}
 		static std::enable_if_t<is_char<T>> format_append(std::string& res, literal<T> c)
 		{
 			res.push_back('\'');
 			to_literal(c.text, res);
 			res.push_back('\'');
 		}
-		static void format_stream(std::ostream& os, literal<T> c) { os << format_str(c); }
 	};
 
 	template<typename T>
 	struct format_trait<literal<std::basic_string<T>>>
 	{
 		using str = literal<std::basic_string<T>>;
-		static std::string format_str(const str& s)
-		{
-			std::string res;
-			format_append(res, s);
-			return res;
-		}
 		static std::enable_if_t<is_char<T>> format_append(std::string& res, const str& s)
 		{
 			res.push_back('"');
@@ -128,7 +107,6 @@ namespace lava::format
 				to_literal(c, res);
 			res.push_back('"');
 		}
-		static void format_stream(std::ostream& os, const str& s) { os << format_str(s); }
 	};
 
 	// format structure for a unicode character
@@ -145,18 +123,10 @@ namespace lava::format
 	struct format_trait<unicode>
 	{
 #define UCHAR_FORMAT_SEQ(uc) \
-	"U+", fill(right(4, '0'), hexadecimal(uint32_t(uc))), '[', decimal(uint32_t(uc)), ']'
-		static std::string format_str(unicode c)
-		{
-			return format(UCHAR_FORMAT_SEQ(c.value));
-		}
+	"U+", right(4, '0', hexadecimal(uint32_t(uc))), '[', decimal(uint32_t(uc)), ']'
 		static void format_append(std::string& res, unicode c)
 		{
 			format_s(res, UCHAR_FORMAT_SEQ(c.value));
-		}
-		static void format_stream(std::ostream& os, unicode c)
-		{
-			format_io(os, UCHAR_FORMAT_SEQ(c.value));
 		}
 #undef UCHAR_FORMAT_SEQ
 	};
