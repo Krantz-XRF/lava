@@ -35,7 +35,7 @@ namespace lava::format
 
 	// an example for supporting new types in lava.format
 	// tag `endl` will introduce a LF to the format target
-	struct endl_t
+	constexpr struct endl_t
 	{
 	} endl;
 	template<>
