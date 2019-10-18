@@ -24,7 +24,8 @@ target_sources(lava-format INTERFACE
 	lava/format/basic.h
 	lava/format/integers.h
 	lava/format/text.h
-	lava/format/meta.h)
+	lava/format/meta.h
+	lava/format/ansi.h)
 target_include_directories(lava-format INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # lava.assert: the assertion library

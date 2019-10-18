@@ -21,6 +21,8 @@ int main()
 		"Pair:           ", std::pair(fmt::decimal(42), "Text"), fmt::endl,
 		"Tuple:          ", std::tuple('a', "String", fmt::unicode(U'x')), fmt::endl,
 		"Plain Array:    ", fmt::apply<fmt::num_base<int>>(arr), fmt::endl,
-		"Literal-String: ", fmt::literal("String1\nString2"), fmt::endl);
+		"Literal-String: ", fmt::literal("String1\nString2"), fmt::endl,
+		"Coloured text:  ", mkAnsi(fmt::Red_BRI + fmt::Intense, "Error"),
+		',', mkAnsi(fmt::Blue_BRI, "Infomation"), fmt::endl);
 	return 0;
 }
