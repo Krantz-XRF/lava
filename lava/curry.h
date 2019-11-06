@@ -14,12 +14,19 @@ namespace lava::curry
 		struct curry_impl;
 
 		// Type of the curried function
-		template<typename Res, typename... Args>
-		using curry_t = typename curry_impl<Res(Args...)>::type;
+		template<typename T>
+		using curry_t = typename curry_impl<T>::type;
 
 		// Get function signature of various function-like objects
 		template<typename T>
 		struct signature;
+
+		// Signature for lambdas
+		template<typename T>
+		struct signature
+		{
+			using type = typename signature<decltype(&T::operator())>::type;
+		};
 
 		// Signature for plain old function pointers
 		template<typename Res, typename... Args>
@@ -70,11 +77,10 @@ namespace lava::curry
 		template<typename Res, typename Arg, typename... Args>
 		struct curry_impl<Res(Arg, Args...)>
 		{
-			using type = std::function<curry_t<Res, Args...>(Arg)>;
+			using type = std::function<curry_t<Res(Args...)>(Arg)>;
 			static type curry(std::function<Res(Arg, Args...)> f)
 			{
-				return [f = std::move(f)](Arg x) -> curry_t<Res, Args...>
-				{
+				return [f = std::move(f)](Arg x) -> curry_t<Res(Args...)> {
 					return lava::curry::curry(std::function<Res(Args...)>(
 						[x = std::move(x), f = std::move(f)](Args... args) {
 							return f(x, args...);
@@ -91,6 +97,6 @@ namespace lava::curry
 	template<typename F>
 	decltype(auto) curry(F&& f)
 	{
-		return detail::curry_impl<signature_t<decltype(&F::operator())>>::curry(f);
+		return detail::curry_impl<signature_t<std::decay_t<F>>>::curry(f);
 	}
 } // namespace lava::curry
