@@ -61,5 +61,10 @@ add_library(lava-trace INTERFACE)
 target_sources(lava-trace INTERFACE lava/trace.h)
 target_include_directories(lava-bitflags INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
+# lava.curry: currying C++ functions
+add_library(lava-curry INTERFACE)
+target_sources(lava-curry INTERFACE lava/curry.h)
+target_include_directories(lava-curry INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
 # test cases for each library
 add_subdirectory(test test EXCLUDE_FROM_ALL)
