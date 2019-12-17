@@ -67,30 +67,15 @@ namespace lava
 		template<typename... Ts>
 		void set(Ts... flags)
 		{
-			static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。");
+			CHECK_TYPES(Ts);
 			(set(flags), ...);
 		}
 		// 取消设置一系列标志位
 		template<typename... Ts>
 		void unset(Ts... flags)
 		{
-			static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。");
+			CHECK_TYPES(Ts);
 			(unset(flags), ...);
-		}
-
-		// 设置一个标志位
-		template<typename... Ts>
-		void set(Ts... xs)
-		{
-			CHECK_TYPES(Ts);
-			value |= (decay(xs) | ...);
-		}
-		// 取消设置一个标志位
-		template<typename... Ts>
-		void unset(Ts... xs)
-		{
-			CHECK_TYPES(Ts);
-			value &= ~(decay(xs) && ...);
 		}
 #undef CHECK_TYPES
 
