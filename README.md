@@ -138,20 +138,24 @@ int main()
 Output:
 
 ```text
-String:       A String
-Character:    a
-Decimal:      42
-Octal:        52
-Hexadecimal:  2A
-Binary:       101010
-23-Based:     1J
-Unicode:      U+0061[97]
-Align-left:   Text
-Align-right:        Text
-Align-center:    Text
+String:         A String
+Character:      a
+Decimal:        42
+Octal:          52
+Hexadecimal:    2A
+Binary:         101010
+23-Based:       1J
+Unicode:        U+0061[97]
+Align-left:     Text
+Align-right:          Text
+Align-center:      Text
+Pair:           <42,Text>
+Tuple:          <a,String,U+0078[120]>
+Plain Array:    {42,0,1}
+Literal-String: "String1\nString2"
 ```
 
-Note that there is trailing spaces in the last 1st and 3rd lines. So with LF characters written out explicitly as `<LF>`, we should see
+Note that there is trailing spaces in lines "align-left" and "align-center". So with LF characters written out explicitly as `<LF>`, we should see
 
 ```text
 Align-left:   Text      <LF>
@@ -199,21 +203,21 @@ int main()
 Here we print the result with `LANGUAGE` defined as `ENGLISH`.
 
 ```text
-error: "E:\GitHub\Lava\Lava\test\assert.cpp":17:main: pre-condition[1 == 2] is not satisfied. messageThe algorithm expect 1 == 2 here.
-error: "E:\GitHub\Lava\Lava\test\assert.cpp":18:main: post-condition[1 == 2] is not satisfied. messageThe algorithm ensures 1 == 2 here.
-error: "E:\GitHub\Lava\Lava\test\assert.cpp":19:main: invariant[1 == 2] is not satisfied. messageThe invariant 1 == 2 should hold here.
-error: "E:\GitHub\Lava\Lava\test\assert.cpp":20:main: unreachable codes are reachedThis code should not be reached.
-error: "E:\GitHub\Lava\Lava\test\assert.cpp":21:main: panic: Don't panic. --The Hitchhiker's Guide to the Galaxy
+error: "assert.cpp":17:main: pre-condition[1 == 2] is not satisfied. messageThe algorithm expect 1 == 2 here.
+error: "assert.cpp":18:main: post-condition[1 == 2] is not satisfied. messageThe algorithm ensures 1 == 2 here.
+error: "assert.cpp":19:main: invariant[1 == 2] is not satisfied. messageThe invariant 1 == 2 should hold here.
+error: "assert.cpp":20:main: unreachable codes are reachedThis code should not be reached.
+error: "assert.cpp":21:main: panic: Don't panic. --The Hitchhiker's Guide to the Galaxy
 ```
 
 Without defining `LANGUAGE` to `ENGLISH`, it will default to `CHINESE_SIMPLIFIED`, so the output would be like:
 
 ```text
-错误: "E:\GitHub\Lava\Lava\test\assert.cpp":16:main: 先置条件[1 == 2]未满足。错误信息：The algorithm expect 1 == 2 here.
-错误: "E:\GitHub\Lava\Lava\test\assert.cpp":17:main: 后置条件[1 == 2]未满足。错误信息：The algorithm ensures 1 == 2 here.
-错误: "E:\GitHub\Lava\Lava\test\assert.cpp":18:main: 不变式[1 == 2]未满足。错误信息：The invariant 1 == 2 should hold here.
-错误: "E:\GitHub\Lava\Lava\test\assert.cpp":19:main: 执行到一处不可达代码：This code should not be reached.
-错误: "E:\GitHub\Lava\Lava\test\assert.cpp":20:main: 致命错误: Don't panic. --The Hitchhiker's Guide to the Galaxy
+错误: "assert.cpp":16:main: 先置条件[1 == 2]未满足。错误信息：The algorithm expect 1 == 2 here.
+错误: "assert.cpp":17:main: 后置条件[1 == 2]未满足。错误信息：The algorithm ensures 1 == 2 here.
+错误: "assert.cpp":18:main: 不变式[1 == 2]未满足。错误信息：The invariant 1 == 2 should hold here.
+错误: "assert.cpp":19:main: 执行到一处不可达代码：This code should not be reached.
+错误: "assert.cpp":20:main: 致命错误: Don't panic. --The Hitchhiker's Guide to the Galaxy
 ```
 
 ## lava.resource
@@ -293,7 +297,7 @@ int main()
 Output with `LANGUAGE` defined as `ENGLISH`:
 
 ```text
-Error: error: "E:\GitHub\Lava\Lava\lava\resource\single.h":26:operator =: pre-condition[&obj != this] is not satisfied. message: Should not move a resource object to itself.
+Error: error: "single.h":26:operator =: pre-condition[&obj != this] is not satisfied. message: Should not move a resource object to itself.
 Destructing a `void*`.
 Destructing a `int*`.
 Destructing a `int*`.
@@ -303,7 +307,7 @@ Destructing a `int*`.
 Output in Chinese Simplified (default case):
 
 ```text
-Error: 错误: "E:\GitHub\Lava\Lava\lava\resource\single.h":26:operator =: 先置条件[&obj != this]未满足。错误信息：不应该 把一个资源对象移动到自己。
+Error: 错误: "single.h":26:operator =: 先置条件[&obj != this]未满足。错误信息：不应该 把一个资源对象移动到自己。
 Destructing a `void*`.
 Destructing a `int*`.
 Destructing a `int*`.

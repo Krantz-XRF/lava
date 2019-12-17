@@ -12,3 +12,6 @@ target_link_libraries(test_bitflags lava-bitflags lava-assert)
 
 add_executable(test_trace trace.cpp)
 target_link_libraries(test_trace lava-trace lava-format)
+
+add_executable(test_curry curry.cpp)
+target_link_libraries(test_curry lava-curry lava-trace)

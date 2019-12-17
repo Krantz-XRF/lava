@@ -26,61 +26,21 @@ namespace lava::format
 		return res;
 	}
 
-	inline void format_io(std::ostream& os) {}
 	// format_io: format all the parameters to output stream `os`
-	template<typename U, typename... Us>
-	inline void format_io(std::ostream& os, U&& x, Us&&... xs)
+	template<typename... Us>
+	inline void format_io(std::ostream& os, Us&&... xs)
 	{
-		format_trait<std::decay_t<U>>::format_stream(os, std::forward<U>(x));
-		format_io(os, std::forward<Us>(xs)...);
+		os << format(std::forward<Us>(xs)...);
 	}
 
-	// default_format_trait: the default implementation for `format_trait`
-	template<typename T>
-	struct default_format_trait
-	{
-		using derived = format_trait<std::decay_t<T>>;
-		static std::string format_str(T v)
-		{
-			std::string res;
-			derived::format_append(res, v);
-			return res;
-		}
-		static void format_append(std::string& res, T v) { res.append(derived::format_str(v)); }
-		static void format_stream(std::ostream& os, T v) { os << derived::format_str(v); }
-	};
-
-// help macros
-// begin the definition of a `format_trait`
-#define FORMAT_TRAIT_BEGIN(type)                                  \
-	template<>                                                    \
-	struct format_trait<type> : public default_format_trait<type> \
-	{
-// begin the definition of a `format_trait` for a tag object `tag`
-#define FORMAT_TRAIT_TAG_BEGIN(tag) FORMAT_TRAIT_BEGIN(tag##_t)
-
-// format T to string
-#define FORMAT_STRING(...) static std::string format_str(__VA_ARGS__)
-// format T, and append to a string
-#define FORMAT_STREAM(...) static void format_stream(__VA_ARGS__)
-// format T, print to the output stream
-#define FORMAT_APPEND(...) static void format_append(__VA_ARGS__)
-
-// macros below will end the definition of a `format_trait`
-// clang-format off
-#define FORMAT_TRAIT_END() };
-#define FORMAT_TRAIT_TAG_END() };
-// helper macros for defining a tag object
-#define SINGLETON_TAG(name) constexpr struct name##_t {} name
-#define TAG_TYPE(name) name##_t
-	// clang-format on
-
-	// an example for using the above macros
+	// an example for supporting new types in lava.format
 	// tag `endl` will introduce a LF to the format target
-	SINGLETON_TAG(endl);
-	FORMAT_TRAIT_TAG_BEGIN(endl)
-		FORMAT_STRING(endl_t) { return "\n"; }
-		FORMAT_STREAM(std::ostream & os, endl_t) { std::endl(os); }
-		FORMAT_APPEND(std::string & res, endl_t) { res.push_back('\n'); }
-	FORMAT_TRAIT_TAG_END()
+	constexpr struct endl_t
+	{
+	} endl;
+	template<>
+	struct format_trait<endl_t>
+	{
+		static void format_append(std::string& res, endl_t) { res.push_back('\n'); }
+	};
 } // namespace lava::format

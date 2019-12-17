@@ -59,6 +59,24 @@ namespace lava
 			CHECK_TYPES(Ts);
 			return (test(flags) || ...);
 		}
+		// 设置一个标志位
+		void set(T flag) { value |= decay(flag); }
+		// 取消设置一个标志位
+		void unset(T flag) { value &= ~decay(flag); }
+		// 设置一系列标志位
+		template<typename... Ts>
+		void set(Ts... flags)
+		{
+			static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。");
+			(set(flags), ...);
+		}
+		// 取消设置一系列标志位
+		template<typename... Ts>
+		void unset(Ts... flags)
+		{
+			static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。");
+			(unset(flags), ...);
+		}
 
 		// 设置一个标志位
 		template<typename... Ts>
@@ -82,6 +100,13 @@ namespace lava
 	private:
 		underlying_type value{0};
 	};
+
+	template<typename T, typename... Ts>
+	bitflags<T> make_flags(T flag, Ts... flags)
+	{
+		static_assert((std::is_same_v<Ts, T> && ...), "所有给定的标志位必须是同样的枚举类型。");
+		return bitflags<T>((flag | ... | flags));
+	}
 
 #define DEFINE_BITFLAGS_BINARY_OPERATOR(op)                   \
 	template<typename T>                                      \

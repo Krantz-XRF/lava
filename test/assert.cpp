@@ -13,7 +13,7 @@
 
 int main()
 {
-	test_assert(expects(1 == 2, "The algorithm expect 1 == 2 here."));
+	test_assert(expects(1 == 2, "The algorithm expects 1 == 2 here."));
 	test_assert(ensures(1 == 2, "The algorithm ensures 1 == 2 here."));
 	test_assert(invariant(1 == 2, "The invariant 1 == 2 should hold here."));
 	test_assert(unreachable("This code should not be reached."));
