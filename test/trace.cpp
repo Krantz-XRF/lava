@@ -3,14 +3,11 @@
 
 namespace fmt = lava::format;
 
-void lava::trace::trace_message(const std::string& msg)
-{
-	std::cout << msg;
-}
+setTraceOutput(std::cout);
 
 int main(int argc, char* argv[])
 {
 	trace("This is a message.");
-	traceShow(fmt::decimal, 5);
+	traceShow(fmt::decimal, 6 * 7);
 	return 0;
 }

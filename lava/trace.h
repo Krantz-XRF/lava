@@ -81,4 +81,6 @@ namespace lava::trace
 	lava::trace::debug_trace(__FILE__, __LINE__, __func__, #__VA_ARGS__, (__VA_ARGS__), lava::trace::lit(__VA_ARGS__))
 #define traceShow(show, ...) \
 	lava::trace::debug_trace(__FILE__, __LINE__, __func__, #__VA_ARGS__, (__VA_ARGS__), show(__VA_ARGS__))
+#define setTraceOutput(...) \
+	void lava::trace::trace_message(const std::string& msg) { (__VA_ARGS__) << msg; }
 } // namespace lava::trace
