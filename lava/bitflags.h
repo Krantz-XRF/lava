@@ -15,18 +15,23 @@ namespace lava
 
 		static constexpr underlying_type decay(T val) noexcept { return static_cast<underlying_type>(val); }
 
+#define CHECK_TYPES(Ts) static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。")
+
 		// 使得bitflags是POD的
-		bitflags() noexcept = default;
-		bitflags(const bitflags&) noexcept = default;
-		bitflags(bitflags&&) noexcept = default;
+		constexpr bitflags() noexcept = default;
+		constexpr bitflags(const bitflags&) noexcept = default;
+		constexpr bitflags(bitflags&&) noexcept = default;
 		~bitflags() noexcept = default;
 		bitflags& operator=(const bitflags&) noexcept = default;
 		bitflags& operator=(bitflags&&) noexcept = default;
 
 		// 类型转换构造函数：允许隐式转换
-		bitflags(T val) noexcept
-			: value{decay(val)}
-		{}
+		template<typename... Ts>
+		bitflags(Ts... vals) noexcept
+			: value{(decay(vals) | ...)}
+		{
+			CHECK_TYPES(Ts);
+		}
 		// 不允许相反方向的转换，标志位必须用专门的类型表示
 
 		// 类型转换构造函数：允许从底层类型构造标志位，必须显式转换
@@ -44,22 +49,38 @@ namespace lava
 		template<typename... Ts>
 		bool all(Ts... flags) const noexcept
 		{
-			static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。");
+			CHECK_TYPES(Ts);
 			return (test(flags) && ...);
 		}
 		// 检验设置了一系列的标志位中的某一个
 		template<typename... Ts>
 		bool any(Ts... flags) const noexcept
 		{
-			static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。");
+			CHECK_TYPES(Ts);
 			return (test(flags) || ...);
 		}
+
+		// 设置一个标志位
+		template<typename... Ts>
+		void set(Ts... xs)
+		{
+			CHECK_TYPES(Ts);
+			value |= (decay(xs) | ...);
+		}
+		// 取消设置一个标志位
+		template<typename... Ts>
+		void unset(Ts... xs)
+		{
+			CHECK_TYPES(Ts);
+			value &= ~(decay(xs) && ...);
+		}
+#undef CHECK_TYPES
 
 		// 退化成底层类型
 		underlying_type decay() const noexcept { return value; }
 
 	private:
-		underlying_type value;
+		underlying_type value{0};
 	};
 
 #define DEFINE_BITFLAGS_BINARY_OPERATOR(op)                   \
