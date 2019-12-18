@@ -1,44 +1,45 @@
 #pragma once
 #include <lava/format.h>
 #include <string>
+#include <string_view>
 
 namespace lava::trace
 {
 	template<typename T>
-	const char* get_type_helper()
+	constexpr auto get_type_helper()
 	{
 #if defined(__GNUC__) || defined(__clang__)
-		return __PRETTY_FUNCTION__;
+		return std::string_view{__PRETTY_FUNCTION__, sizeof(__PRETTY_FUNCTION__) - 1};
 #elif defined(_MSC_VER)
-		return __FUNCSIG__;
+		return std::string_view{__FUNCSIG__, sizeof(__FUNCSIG__) - 1};
 #else
 #	error "No support for this compiler."
 #endif
 	}
 
 	template<typename T>
-	std::string get_type()
+	constexpr std::string_view get_type()
 	{
-		std::string signature = get_type_helper<T>();
-#if defined(_MSC_VER)
-		// "const char *__cdecl lava::trace::get_type_helper<*>(void)"
-		constexpr size_t prefix_length = sizeof("const char *__cdecl lava::trace::get_type_helper<") - 1;
-		constexpr size_t suffix_length = sizeof(">(void)") - 1;
-#elif defined(__clang__)
+		auto signature = get_type_helper<T>();
+#if defined(__clang__)
 		// "const char* lava::trace::get_type_helper() [T = *]"
-		constexpr size_t prefix_length = sizeof("const char* lava::trace::get_type_helper() [T = ") - 1;
+		constexpr size_t prefix_length = sizeof("constexpr auto lava::trace::get_type_helper() [T = ") - 1;
 		constexpr size_t suffix_length = sizeof("]") - 1;
 #elif defined(__GNUC__)
 		// "const char* lava::trace::get_type_helper() [with T = *]"
-		constexpr size_t prefix_length = sizeof("const char* lava::trace::get_type_helper() [with T = ") - 1;
+		constexpr size_t prefix_length = sizeof("constexpr auto lava::trace::get_type_helper() [with T = ") - 1;
 		constexpr size_t suffix_length = sizeof("]") - 1;
+#elif defined(_MSC_VER)
+		// "const char *__cdecl lava::trace::get_type_helper<*>(void)"
+		constexpr size_t prefix_length = sizeof("auto __cdecl lava::trace::get_type_helper<") - 1;
+		constexpr size_t suffix_length = sizeof(">(void)") - 1;
 #else
 #	error "Compiler not supported."
 #endif
 		return signature.substr(prefix_length, signature.size() - prefix_length - suffix_length);
 	}
 
-	void trace_message(const std::string& str);
+	void trace_message(std::string_view str);
 
 	template<typename T, typename F>
 	T&& debug_trace(const char* file, int line, const char* func, const char* expr, T&& val, F&& fmt)
@@ -82,5 +83,5 @@ namespace lava::trace
 #define traceShow(show, ...) \
 	lava::trace::debug_trace(__FILE__, __LINE__, __func__, #__VA_ARGS__, (__VA_ARGS__), show(__VA_ARGS__))
 #define setTraceOutput(...) \
-	void lava::trace::trace_message(const std::string& msg) { (__VA_ARGS__) << msg; }
+	void lava::trace::trace_message(std::string_view msg) { (__VA_ARGS__) << msg; }
 } // namespace lava::trace

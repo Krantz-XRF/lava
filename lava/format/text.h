@@ -2,6 +2,7 @@
 #include "basic.h"
 #include "integers.h"
 #include "meta.h"
+#include <string>
 
 namespace lava::format
 {
@@ -27,6 +28,12 @@ namespace lava::format
 	struct format_trait<std::string>
 	{
 		static void format_append(std::string& res, const std::string& s) { res.append(s); }
+	};
+
+	template<> // format a C++ std::string_view
+	struct format_trait<std::string_view>
+	{
+		static void format_append(std::string& res, const std::string_view& s) { res.append(s); }
 	};
 
 	template<typename T>
