@@ -13,3 +13,7 @@
 #define msg_unreachable_code_reached "unreachable codes are reached: "
 #define msg_assert_type_names "pre-condition", "post-condition", "invariant"
 #define msg_condition_not_satisfied " is not satisfied.", lava::format::endl, mkAnsi(lava::format::InfoColour, "message: ")
+
+#define msg_invalid_enum_value(x, type)                                                                         \
+	"invalid enum value ", text_quote(lava::format::hexadecimal(static_cast<std::underlying_type_t<type>>(x))), \
+		" of type ", text_quote(lava::trace::get_type<type>()), "."

@@ -13,3 +13,7 @@
 #define msg_unreachable_code_reached "执行到一处不可达代码："
 #define msg_assert_type_names "先置条件", "后置条件", "不变式"
 #define msg_condition_not_satisfied "未满足。", lava::format::endl, mkAnsi(lava::format::InfoColour, "错误信息：")
+
+#define msg_invalid_enum_value(x, type)                                                          \
+	"参数", text_quote(lava::format::hexadecimal(static_cast<std::underlying_type_t<type>>(x))), \
+		"不是有效的", text_quote(lava::trace::get_type<type>()), "类型的枚举值。"

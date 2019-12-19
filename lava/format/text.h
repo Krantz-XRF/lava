@@ -78,6 +78,11 @@ namespace lava::format
 		static constexpr std::enable_if_t<is_char<T>, bool> value = true;
 	};
 	template<typename T>
+	struct is_string_helper<std::basic_string_view<T>>
+	{
+		static constexpr std::enable_if_t<is_char<T>, bool> value = true;
+	};
+	template<typename T>
 	constexpr bool is_string = is_string_helper<T>::value;
 
 	template<typename T>
@@ -108,6 +113,19 @@ namespace lava::format
 	{
 		using str = literal<std::basic_string<T>>;
 		static std::enable_if_t<is_char<T>> format_append(std::string& res, const str& s)
+		{
+			res.push_back('"');
+			for (auto c : s.text)
+				to_literal(c, res);
+			res.push_back('"');
+		}
+	};
+
+	template<typename T>
+	struct format_trait<literal<std::basic_string_view<T>>>
+	{
+		using str = literal<std::basic_string_view<T>>;
+		static std::enable_if_t<is_char<T>> format_append(std::string& res, str s)
 		{
 			res.push_back('"');
 			for (auto c : s.text)

@@ -22,15 +22,15 @@ namespace lava::trace
 	{
 		auto signature = get_type_helper<T>();
 #if defined(__clang__)
-		// "const char* lava::trace::get_type_helper() [T = *]"
+		// "constexpr auto lava::trace::get_type_helper() [T = *]"
 		constexpr size_t prefix_length = sizeof("constexpr auto lava::trace::get_type_helper() [T = ") - 1;
 		constexpr size_t suffix_length = sizeof("]") - 1;
 #elif defined(__GNUC__)
-		// "const char* lava::trace::get_type_helper() [with T = *]"
+		// "constexpr auto lava::trace::get_type_helper() [with T = *]"
 		constexpr size_t prefix_length = sizeof("constexpr auto lava::trace::get_type_helper() [with T = ") - 1;
 		constexpr size_t suffix_length = sizeof("]") - 1;
 #elif defined(_MSC_VER)
-		// "const char *__cdecl lava::trace::get_type_helper<*>(void)"
+		// "auto __cdecl lava::trace::get_type_helper<*>(void)"
 		constexpr size_t prefix_length = sizeof("auto __cdecl lava::trace::get_type_helper<") - 1;
 		constexpr size_t suffix_length = sizeof(">(void)") - 1;
 #else
