@@ -13,6 +13,7 @@ enum LavaLibs
 	Bitflags = lava::bit(4),
 	Trace = lava::bit(5),
 };
+MAKE_ENUM_BITWISE(LavaLibs)
 
 setTraceOutput(std::cout);
 
@@ -25,10 +26,14 @@ int main()
 	ensures(f.test(Bitflags));
 	ensures(f.all(Assert, Config, Format));
 	ensures(!f.any(Trace, Resource));
-	traceShow(fmt::binary, f.decay());
+	trace(f);
 
 	lava::bitflags<LavaLibs> g{Config, Format, Resource};
-	ensures(f & g);
+	ensures((f & g) == lava::make_flags(Config, Format));
+	ensures((f | g) == lava::make_flags(Config, Format, Assert, Bitflags, Resource));
+	ensures((f ^ g) == lava::make_flags(Assert, Bitflags, Resource));
+	ensures((~f) == lava::make_flags(Resource, Trace));
+	trace(g);
 
 	return 0;
 }

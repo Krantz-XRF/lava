@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
-#include <type_traits>
+#include <lava/enums.h>
+#include <lava/format/basic.h>
 
 namespace lava
 {
@@ -14,6 +15,7 @@ namespace lava
 		using underlying_type = std::underlying_type_t<T>;
 
 		static constexpr underlying_type decay(T val) noexcept { return static_cast<underlying_type>(val); }
+		static constexpr underlying_type valid_bits = enums::valid_bits<T, true>();
 
 #define CHECK_TYPES(Ts) static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。")
 
@@ -86,6 +88,33 @@ namespace lava
 		underlying_type value{0};
 	};
 
+	namespace format
+	{
+		template<typename T>
+		struct format_trait<bitflags<T>>
+		{
+			static void format_append(std::string& res, bitflags<T> flags)
+			{
+				auto x = flags.decay();
+				res.append("[");
+				if (x != 0)
+				{
+					auto bit = static_cast<T>(x & -x);
+					res.append(enums::name_of(bit));
+					x &= x - 1;
+				}
+				while (x != 0)
+				{
+					auto bit = static_cast<T>(x & -x);
+					res.append(", ");
+					res.append(enums::name_of(bit));
+					x &= x - 1;
+				}
+				res.append("]");
+			}
+		};
+	} // namespace format
+
 	template<typename T, typename... Ts>
 	bitflags<T> make_flags(T flag, Ts... flags)
 	{
@@ -113,7 +142,11 @@ namespace lava
 	// 允许对标志位的对称差操作
 	DEFINE_BITFLAGS_BINARY_OPERATOR(^)
 	// 允许对标志位的补集操作
-	DEFINE_BITFLAGS_UNARY_OPERATOR(~)
+	template<typename T>
+	bitflags<T> operator~(bitflags<T> flags)
+	{
+		return bitflags<T>(bitflags<T>::valid_bits & ~flags.decay());
+	}
 
 #undef DEFINE_BITFLAGS_BINARY_OPERATOR
 #undef DEFINE_BITFLAGS_UNARY_OPERATOR
@@ -133,4 +166,16 @@ namespace lava
 	DEFINE_BITFLAGS_ASSIGNMENT(^)
 
 #undef DEFINE_BITFLAGS_ASSIGNMENT
+
+	template<typename T>
+	bool operator==(bitflags<T> lhs, bitflags<T> rhs)
+	{
+		return lhs.decay() == rhs.decay();
+	}
+
+	template<typename T>
+	bool operator!=(bitflags<T> lhs, bitflags<T> rhs)
+	{
+		return lhs.decay() != rhs.decay();
+	}
 } // namespace lava
