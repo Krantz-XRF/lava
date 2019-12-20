@@ -34,6 +34,11 @@ target_sources(lava-assert INTERFACE lava/assert.h)
 target_include_directories(lava-assert INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lava-assert INTERFACE lava-config lava-format)
 
+# lava.finally: use RAII style to express control flow
+add_library(lava-finally INTERFACE)
+target_sources(lava-finally INTERFACE lava/finally.h)
+target_include_directories(lava-finally INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
 # lava.resource: the resource management library
 add_library(lava-resource INTERFACE)
 target_sources(lava-resource INTERFACE
