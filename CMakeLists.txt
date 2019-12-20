@@ -51,6 +51,11 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
 	target_compile_options(lava-resource INTERFACE "-frelaxed-template-template-args")
 endif ()
 
+# lava.enums: experimental support for reflection on enums
+add_library(lava-enums INTERFACE)
+target_sources(lava-enums INTERFACE lava/enums.h)
+target_include_directories(lava-enums INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
 # lava.bitflags: the bit-flags support for enum
 add_library(lava-bitflags INTERFACE)
 target_sources(lava-bitflags INTERFACE lava/bitflags.h)
