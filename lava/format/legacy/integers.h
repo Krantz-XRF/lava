@@ -2,7 +2,7 @@
 #include "basic.h"
 #include <algorithm>
 
-namespace lava::format
+namespace lava::format::legacy
 {
 	template<typename T, T base = 10, bool capital = true>
 	struct num_base // format a integer using the given base
@@ -86,4 +86,4 @@ namespace lava::format
 			res.append(x ? "true" : "false");
 		}
 	};
-} // namespace lava::format
+} // namespace lava::format::legacy

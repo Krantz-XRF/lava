@@ -1,7 +1,7 @@
 #pragma once
-#include <utility>
-#include <lava/resource/utility.h>
 #include <lava/resource/single.h>
+#include <lava/resource/utility.h>
+#include <utility>
 
 namespace lava
 {
@@ -20,4 +20,4 @@ namespace lava
 	};
 	template<typename ObjType, typename ResPtr, size_t count>
 	using expand_some = typename expand_some_impl<ObjType, ResPtr, std::make_index_sequence<count>>::type;
-}
+} // namespace lava

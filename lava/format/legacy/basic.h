@@ -2,7 +2,7 @@
 #include <ostream>
 #include <string>
 
-namespace lava::format
+namespace lava::format::legacy
 {
 	// trait format_trait<T>
 	template<typename T>
@@ -43,4 +43,4 @@ namespace lava::format
 	{
 		static void format_append(std::string& res, endl_t) { res.push_back('\n'); }
 	};
-} // namespace lava::format
+} // namespace lava::format::legacy

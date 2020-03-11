@@ -21,11 +21,13 @@ target_include_directories(lava-config INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 add_library(lava-format INTERFACE)
 target_sources(lava-format INTERFACE
 	lava/format.h
-	lava/format/basic.h
-	lava/format/integers.h
-	lava/format/text.h
-	lava/format/meta.h
-	lava/format/ansi.h)
+	lava/format/legacy.h
+	lava/format/legacy/basic.h
+	lava/format/legacy/integers.h
+	lava/format/legacy/text.h
+	lava/format/legacy/containers.h
+	lava/format/legacy/meta.h
+	lava/format/legacy/ansi.h)
 target_include_directories(lava-format INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # lava.assert: the assertion library

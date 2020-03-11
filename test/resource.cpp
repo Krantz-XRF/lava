@@ -15,15 +15,15 @@ public:
 	// for lava.resource does no check on this, we should make it safe to Destroy nullptrs
 	void destroy(int* x) noexcept
 	{
-		lava::format::format_io(std::cout, "Destructing a `int*`.", lava::format::endl);
+		lava::format::legacy::format_io(std::cout, "Destructing a `int*`.", lava::format::legacy::endl);
 	}
 	void destroy(void* x) noexcept
 	{
-		lava::format::format_io(std::cout, "Destructing a `void*`.", lava::format::endl);
+		lava::format::legacy::format_io(std::cout, "Destructing a `void*`.", lava::format::legacy::endl);
 	}
 	void destroy(double* x) noexcept
 	{
-		lava::format::format_io(std::cout, "Destructing a `double*`.", lava::format::endl);
+		lava::format::legacy::format_io(std::cout, "Destructing a `double*`.", lava::format::legacy::endl);
 	}
 	// define getter functions
 	// these functions return references, so we can modify the value
@@ -45,7 +45,7 @@ int main()
 	}
 	catch (std::runtime_error& e)
 	{
-		lava::format::format_io(std::cerr, "Error: ", e.what(), lava::format::endl);
+		lava::format::legacy::format_io(std::cerr, "Error: ", e.what(), lava::format::legacy::endl);
 	}
 	// use getter functions defined in class using DEFINE_GETTER_* macros
 	// all these functions return resources by reference

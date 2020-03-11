@@ -1,7 +1,7 @@
 #include <iostream>
 #include <lava/trace.h>
 
-namespace fmt = lava::format;
+namespace fmt = lava::format::legacy;
 
 setTraceOutput(std::cout);
 

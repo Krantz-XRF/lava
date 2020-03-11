@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <initializer_list>
 #include <lava/enums.h>
-#include <lava/format/basic.h>
+#include <lava/format/legacy.h>
 
 namespace lava
 {
@@ -87,7 +87,7 @@ namespace lava
 		underlying_type value{0};
 	};
 
-	namespace format
+	namespace format::legacy
 	{
 		template<typename T>
 		struct format_trait<bitflags<T>>
@@ -112,7 +112,7 @@ namespace lava
 				res.append("]");
 			}
 		};
-	} // namespace format
+	} // namespace format::legacy
 
 	template<typename T, typename... Ts>
 	bitflags<T> make_flags(T flag, Ts... flags)

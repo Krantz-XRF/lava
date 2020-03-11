@@ -2,7 +2,7 @@
 #include "basic.h"
 #include "integers.h"
 
-namespace lava::format
+namespace lava::format::legacy
 {
 	// Wrapper for ANSI Escape Sequence
 	struct ansi
@@ -59,7 +59,7 @@ namespace lava::format
 	};
 
 #ifndef LAVA_DISABLE_ANSI_ESCAPE_MACROS
-#	define mkAnsi(seq, ...) seq, __VA_ARGS__, lava::format::Reset
+#	define mkAnsi(seq, ...) seq, __VA_ARGS__, lava::format::legacy::Reset
 #	define fmtAnsi(...) format(mkAnsi(__VA_ARGS__))
 #endif
-} // namespace lava::format
+} // namespace lava::format::legacy

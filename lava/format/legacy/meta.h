@@ -2,7 +2,7 @@
 #include "basic.h"
 #include <string>
 
-namespace lava::format
+namespace lava::format::legacy
 {
 	// 3 type of alignments
 	enum class alignment : unsigned char
@@ -72,4 +72,4 @@ namespace lava::format
 	DEFINE_ALIGNMENT(alignment::right, right)
 	DEFINE_ALIGNMENT(alignment::center, center)
 #undef DEFINE_ALIGNMENT
-} // namespace lava::format
+} // namespace lava::format::legacy

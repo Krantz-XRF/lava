@@ -4,7 +4,7 @@
 #include "meta.h"
 #include <string>
 
-namespace lava::format
+namespace lava::format::legacy
 {
 	template<> // format a single character
 	struct format_trait<char>
@@ -155,4 +155,4 @@ namespace lava::format
 		}
 #undef UCHAR_FORMAT_SEQ
 	};
-} // namespace lava::format
+} // namespace lava::format::legacy

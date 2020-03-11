@@ -1,9 +1,9 @@
 #include <iostream>
-#include <lava/format.h>
+#include <lava/format/legacy.h>
 
 int main()
 {
-	namespace fmt = lava::format;
+	namespace fmt = lava::format::legacy;
 	int arr[] = {42, 0, 1};
 	fmt::format_io(
 		std::cout,

@@ -3,7 +3,7 @@
 #include <iterator>
 #include <tuple>
 
-namespace lava::format
+namespace lava::format::legacy
 {
 	template<typename T, typename U> // format a std::pair
 	struct format_trait<std::pair<T, U>>
@@ -87,4 +87,4 @@ namespace lava::format
 			format_s(res, '}');
 		}
 	};
-} // namespace lava::format
+} // namespace lava::format::legacy

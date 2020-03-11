@@ -1,5 +1,5 @@
 #pragma once
-#include <lava/format.h>
+#include <lava/format/legacy.h>
 #include <string>
 #include <string_view>
 
@@ -44,27 +44,27 @@ namespace lava::trace
 	template<typename T, typename F>
 	T&& debug_trace(const char* file, int line, const char* func, const char* expr, T&& val, F&& fmt)
 	{
-		std::string msg = format::format(
-			'[', file, ':', format::decimal(line), " (", func, ")] ",
+		std::string msg = format::legacy::format(
+			'[', file, ':', format::legacy::decimal(line), " (", func, ")] ",
 			'(', get_type<T>(), ") ", expr, " = ", std::forward<F>(fmt),
-			format::endl);
+			format::legacy::endl);
 		trace_message(msg);
 		return std::forward<T>(val);
 	}
 
-	template<typename T, typename C, size_t N, typename = std::enable_if_t<format::is_char<C>>>
+	template<typename T, typename C, size_t N, typename = std::enable_if_t<format::legacy::is_char<C>>>
 	T&& debug_trace(const char* file, int line, const char* func, const char* expr, T&& val, const C (&fmt)[N])
 	{
-		std::string msg = format::format('[', file, ':', format::decimal(line), " (", func, ")] ", fmt, format::endl);
+		std::string msg = format::legacy::format('[', file, ':', format::legacy::decimal(line), " (", func, ")] ", fmt, format::legacy::endl);
 		trace_message(msg);
 		return std::forward<T>(val);
 	}
 
 	template<typename T>
 	using literal = std::conditional_t<
-		format::is_char<T> || format::is_string<T>,
-		format::literal<T>,
-		format::identity<T>>;
+		format::legacy::is_char<T> || format::legacy::is_string<T>,
+		format::legacy::literal<T>,
+		format::legacy::identity<T>>;
 
 	template<typename T>
 	literal<T> lit(T&& v)
@@ -72,7 +72,7 @@ namespace lava::trace
 		return std::forward<T>(v);
 	}
 
-	template<typename C, size_t N, typename = std::enable_if_t<format::is_char<C>>>
+	template<typename C, size_t N, typename = std::enable_if_t<format::legacy::is_char<C>>>
 	auto lit(const C (&v)[N]) -> const C (&)[N]
 	{
 		return v;

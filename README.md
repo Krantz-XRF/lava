@@ -12,14 +12,14 @@
 - `format_io` takes a `std::ostream&`, prints formatted text to it.
 - `format` is a wrapper on `format_s`, passing an empty string to `format_s` and returning the result.
 
-In the following sections, when refering to types, the cv-qualifiers are insignificant, for all types are `std::decay`ed before they are passed to `lava::format::format_trait`.
+In the following sections, when refering to types, the cv-qualifiers are insignificant, for all types are `std::decay`ed before they are passed to `lava::format::legacy::format_trait`.
 
 ### Getting started
 
 Try out the code below:
 
 ```c++
-namespace fmt = lava::format;
+namespace fmt = lava::format::legacy;
 // print format result to std::ostream (e.g. std::cout)
 fmt::format_io(std::cout, "String", 'c', fmt::decimal(42), fmt::endl);
 // append format result to std::string
@@ -48,11 +48,11 @@ See `lava/format/text.h` for implementation details.
 
 Integers can be formatted in required base. They should be wrapped using the following wrappers:
 
-- `lava::format::number<base, capital, T>`
-- `lava::format::decimal<capital, T>`
-- `lava::format::binary<capital, T>`
-- `lava::format::octal<capital, T>`
-- `lava::format::hexadecimal<capital, T>`
+- `lava::format::legacy::number<base, capital, T>`
+- `lava::format::legacy::decimal<capital, T>`
+- `lava::format::legacy::binary<capital, T>`
+- `lava::format::legacy::octal<capital, T>`
+- `lava::format::legacy::hexadecimal<capital, T>`
 
 Explanations for template parameters:
 
@@ -69,7 +69,7 @@ See `lava/format/integers.h` for implementation details.
 All these entities can be formatted with an alignment and a padding character. Use the `fill` wrapper.
 
 ```c++
-lava::format::fill(lava::format::ALIGN(WIDTH, [FILL]), CONTENTS...)
+lava::format::legacy::fill(lava::format::legacy::ALIGN(WIDTH, [FILL]), CONTENTS...)
 ```
 
 Explanations:
@@ -89,7 +89,7 @@ TODO
 
 You may extend the ability of `format_*` functions to some custom type `T` by specializing `format_trait<T>`. Type `T` should be such a type as if it is `std::decay`ed: no top level cv-qualifiers, no reference, arrays should be expressed as pointers.
 
-`lava.format` provides some helper macros. See the definition of `lava::format::endl` for example:
+`lava.format` provides some helper macros. See the definition of `lava::format::legacy::endl` for example:
 
 ```c++
 // tag `endl` will introduce a LF to the format target
@@ -113,7 +113,7 @@ This example (test case) can be found in `test/format.cpp`.
 
 int main()
 {
-    namespace fmt = lava::format;
+    namespace fmt = lava::format::legacy;
     int arr[] = {42, 0, 1};
     fmt::format_io(
         std::cout,
@@ -248,15 +248,15 @@ public:
     // for lava.resource does no check on this, we should make it safe to destroy nullptrs
     void destroy(int* x) noexcept
     {
-        lava::format::format_io(std::cout, "Destructing a `int*`.", lava::format::endl);
+        lava::format::legacy::format_io(std::cout, "Destructing a `int*`.", lava::format::legacy::endl);
     }
     void destroy(void* x) noexcept
     {
-        lava::format::format_io(std::cout, "Destructing a `void*`.", lava::format::endl);
+        lava::format::legacy::format_io(std::cout, "Destructing a `void*`.", lava::format::legacy::endl);
     }
     void destroy(double* x) noexcept
     {
-        lava::format::format_io(std::cout, "Destructing a `double*`.", lava::format::endl);
+        lava::format::legacy::format_io(std::cout, "Destructing a `double*`.", lava::format::legacy::endl);
     }
     // define getter functions
     // these functions return references, so we can modify the value
@@ -278,7 +278,7 @@ int main()
     }
     catch (std::runtime_error& e)
     {
-        lava::format::format_io(std::cerr, "Error: ", e.what(), lava::format::endl);
+        lava::format::legacy::format_io(std::cerr, "Error: ", e.what(), lava::format::legacy::endl);
     }
     // use getter functions defined in class using DEFINE_GETTER_* macros
     // all these functions return resources by reference

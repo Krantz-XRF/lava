@@ -17,7 +17,7 @@ MAKE_ENUM_BITWISE(LavaLibs)
 
 setTraceOutput(std::cout);
 
-namespace fmt = lava::format;
+namespace fmt = lava::format::legacy;
 
 int main()
 {
