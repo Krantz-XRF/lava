@@ -18,3 +18,8 @@ target_link_libraries(test_trace lava-trace lava-format)
 
 add_executable(test_curry curry.cpp)
 target_link_libraries(test_curry lava-curry lava-trace)
+
+add_custom_target(tests)
+add_dependencies(tests
+	test_format test_assert test_finally test_resource
+	test_bitflags test_trace test_curry)
