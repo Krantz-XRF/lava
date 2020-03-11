@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <initializer_list>
 #include <lava/enums.h>
 #include <lava/format/basic.h>
 
@@ -17,8 +18,6 @@ namespace lava
 		static constexpr underlying_type decay(T val) noexcept { return static_cast<underlying_type>(val); }
 		static constexpr underlying_type valid_bits = enums::valid_bits<T, true>();
 
-#define CHECK_TYPES(Ts) static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。")
-
 		// 使得bitflags是POD的
 		constexpr bitflags() noexcept = default;
 		constexpr bitflags(const bitflags&) noexcept = default;
@@ -28,11 +27,10 @@ namespace lava
 		bitflags& operator=(bitflags&&) noexcept = default;
 
 		// 类型转换构造函数：允许隐式转换
-		template<typename... Ts>
-		bitflags(Ts... vals) noexcept
-			: value{(decay(vals) | ...)}
+		bitflags(std::initializer_list<T> vals) noexcept
 		{
-			CHECK_TYPES(Ts);
+			for (auto v : vals)
+				value |= v;
 		}
 		// 不允许相反方向的转换，标志位必须用专门的类型表示
 
@@ -41,6 +39,7 @@ namespace lava
 			: value{val}
 		{}
 
+#define CHECK_TYPES(Ts) static_assert((std::is_same_v<Ts, T> && ...), "只能指定枚举类型T的标志位。")
 		// 检验标志位非空
 		bool test() const noexcept { return value != 0; }
 		explicit operator bool() const noexcept { return test(); }

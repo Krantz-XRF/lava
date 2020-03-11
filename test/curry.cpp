@@ -4,10 +4,7 @@
 
 namespace fmt = lava::format;
 
-void lava::trace::trace_message(const std::string& msg)
-{
-	std::cout << msg;
-}
+setTraceOutput(std::cout);
 
 int plus(int x, int y) { return x + y; }
 
